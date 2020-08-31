@@ -22,10 +22,9 @@ impl Ray{
         self.B
     }
 
-    pub fn point_at_parameter(self,T:f32)->Vec3{
-        self.A + self.B * T
+    pub fn point_at_parameter(self,t:f32)->Vec3{
+        self.A + self.B * t
     }
-
 }
 
 #[cfg(test)]
