@@ -1,24 +1,33 @@
 mod vec3;
 mod ray;
+mod sphere;
+mod hittable;
+mod hittable_list;
 
+use ray::Ray;
 use vec3::Vec3;
 use vec3::Point3;
 use vec3::Color;
-use ray::Ray;
+use sphere::Sphere;
+use hittable::{HitRecord,Hittable};
+use hittable_list::*;
 
-fn color(r:&Ray)->Vec3{
-    let mut t:f32 = hit_sphere(&Point3::new( 0.0, 0.0, -1.0), 0.5, r);
-    if t > 0.0
+
+fn color(r:&Ray, world: &Hittable_List)->Vec3{
+
+    let mut rec: HitRecord = HitRecord::default();
+
+    if (world.hit(r,0.0,std::f32::MAX, & mut rec))
     {
-        let n: Vec3 = Vec3::unit_vector(&(r.point_at_parameter(t) - Vec3::new(0.0,0.0,-1.0)));
-
-        return 0.5 * Color::new( n.x() + 1.0, n.y() + 1.0, n.z() + 1.0);
+        return 0.5 * (Vec3::new(
+            rec.normal().x(),
+            rec.normal().y(),
+            rec.normal().z()
+        ) + Color::new(1.0, 1.0, 1.0));
     }
-
-    let unit_direction = Vec3::unit_vector(&r.direction());
-
-    t = 0.5 * (unit_direction.y() + 1.0);
-    (Vec3::new(1.0, 1.0, 1.0) * (1.0-t) ) + (Vec3::new(0.5, 0.7, 1.0) * t)
+    let unit_direction: Vec3 = Vec3::unit_vector(&r.direction());
+    let t:f32  = 0.5 * (unit_direction.y()+1.0);
+    return (1.0 -t) * Color::new(1.0, 1.0, 1.0) + t*Color::new(0.05, 0.7, 1.0);
 }
 
 fn hit_sphere (center: &Point3, radius: f32, r: &Ray) -> f32{
@@ -60,6 +69,12 @@ fn write_sample_ppm (image_width:i32,image_height:i32,max_value:i32){
 
 fn write_ppm (aspect_ratio:f32, image_width:i32, image_height:i32, max_value:i16){
 
+    let mut list: Vec<Box<dyn Hittable>> = Vec::new();
+    list.push(Box::new(Sphere::sphere(Vec3::new(0.0, 0.0, -1.0),0.5)));
+    list.push(Box::new(Sphere::sphere(Vec3::new(0.0, -100.5, -1.0),100.0)));
+    let world = Hittable_List::new(list);
+
+
     let viewport_height:f32 = 2.0;
     let viewport_width:f32 = aspect_ratio * viewport_height;
     let focal_length:f32 = 1.0;
@@ -77,7 +92,7 @@ fn write_ppm (aspect_ratio:f32, image_width:i32, image_height:i32, max_value:i16
             let v:f32 = j as f32 / (image_height - 1) as f32;
             
             let r: Ray = Ray::ray(origin, lower_left_corner+ horizontal*u + vertical*v + -origin) ;
-            let col: Vec3 = color(&r);
+            let col: Vec3 = color(&r,&world);
 
             let ir:i32 = (255.99 * col.x()) as i32;
             let ig:i32 = (255.99 * col.y()) as i32;
