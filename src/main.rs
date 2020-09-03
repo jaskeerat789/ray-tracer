@@ -1,5 +1,6 @@
 mod vec3;
 mod ray;
+mod camera;
 mod sphere;
 mod hittable;
 mod hittable_list;
@@ -8,10 +9,12 @@ use ray::Ray;
 use vec3::Vec3;
 use vec3::Point3;
 use vec3::Color;
+use camera::Camera;
 use sphere::Sphere;
 use hittable::{HitRecord,Hittable};
 use hittable_list::*;
 
+use rand::Rng;
 
 fn color(r:&Ray, world: &Hittable_List)->Vec3{
 
@@ -74,7 +77,7 @@ fn write_ppm (aspect_ratio:f32, image_width:i32, image_height:i32, max_value:i16
     list.push(Box::new(Sphere::sphere(Vec3::new(0.0, -100.5, -1.0),100.0)));
     let world = Hittable_List::new(list);
 
-
+    let sample_per_pixel:i16 = 100;
     let viewport_height:f32 = 2.0;
     let viewport_width:f32 = aspect_ratio * viewport_height;
     let focal_length:f32 = 1.0;
@@ -84,19 +87,26 @@ fn write_ppm (aspect_ratio:f32, image_width:i32, image_height:i32, max_value:i16
     let vertical : Vec3 = Vec3::new(0.0, viewport_height, 0.0);
     let lower_left_corner : Vec3 = origin - horizontal/2.0 - vertical/2.0 - Vec3::new(0.0, 0.0, focal_length);
 
+    let cam: Camera = Camera::new();
+    let mut rng = rand::thread_rng();
+
     println!("P3\n{} {}\n{}",image_width,image_height,max_value);
 
     for j in (0..image_height).rev(){
         for i in 0..image_width {
-            let u:f32 = i as f32 / (image_width - 1) as f32;
-            let v:f32 = j as f32 / (image_height - 1) as f32;
-            
-            let r: Ray = Ray::ray(origin, lower_left_corner+ horizontal*u + vertical*v + -origin) ;
-            let col: Vec3 = color(&r,&world);
+            let mut pixel_color: Color = Color::new(0.0, 0.0, 0.0);
+            for _ in 0..sample_per_pixel{
+                let u:f32 = (i as f32 + rng.gen_range(0.0,1.0)) / (image_width - 1) as f32;
+                let v:f32 = (j as f32 + rng.gen_range(0.0,1.0)) / (image_height - 1) as f32;
+                let r: Ray = cam.get_ray(u, v);
+                pixel_color = pixel_color + color(&r,&world)
+            }
 
-            let ir:i32 = (255.99 * col.x()) as i32;
-            let ig:i32 = (255.99 * col.y()) as i32;
-            let ib:i32 = (255.99 * col.z()) as i32;
+            pixel_color = pixel_color / sample_per_pixel as f32;
+
+            let ir:i32 = (255.99 * pixel_color.x()) as i32;
+            let ig:i32 = (255.99 * pixel_color.y()) as i32;
+            let ib:i32 = (255.99 * pixel_color.z()) as i32;
             println!("{} {} {}",ir,ig,ib);
 
         }
