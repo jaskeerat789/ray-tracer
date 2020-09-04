@@ -1,4 +1,5 @@
 use std::ops;
+use crate::util::Lib;
 
 #[derive(Debug,PartialEq,Default,Copy,Clone)]
 
@@ -47,6 +48,50 @@ impl Vec3{
         Vec3::new(u.y()*v.z() - u.z()*v.y(),
                   u.z()*v.x() - u.x()*v.z(),
                   u.x()*v.y() - u.y()*v.y())
+    }
+
+    pub fn random() -> Vec3{
+        Vec3{
+            e:[Lib::random_double(),Lib::random_double(),Lib::random_double()]
+        }
+    }
+    
+    pub fn random_min_max(min: f32, max: f32) -> Vec3{
+        Vec3{
+            e:[Lib::random_min_max(min, max),Lib::random_min_max(min, max),Lib::random_min_max(min, max)]
+        }
+    }
+
+    pub fn random_in_unit_sphere()-> Vec3 {
+        loop
+        {
+            let p: Vec3 = Vec3::random_min_max(-1.0, 1.0);
+            
+            if p.squared_length() <= 1.0
+            {
+                return p;
+            }
+        }
+    }
+
+    pub fn random_unit_vector() -> Vec3{
+        let a = Lib::random_min_max(0.0, 2.0 * std::f32::consts::PI);
+        let z = Lib::random_min_max(-1.0, 1.0);
+        let r = (1.0 - z*z).sqrt();
+        Vec3{
+            e:[r * a.cos(),r * a.sin(), z]
+        }
+    }
+
+    pub fn random_in_hemisphere (normal: &Vec3) -> Vec3{
+        let in_unit_sphere = Vec3::random_in_unit_sphere();
+        
+        if Vec3::dot(&in_unit_sphere, normal) > 0.0
+        {
+            return in_unit_sphere
+        }
+
+        - in_unit_sphere
     }
 }
 
