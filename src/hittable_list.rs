@@ -1,17 +1,17 @@
 use crate::hittable::*;
 use crate::ray::Ray;
 
-pub struct Hittable_List {
+pub struct HittableList {
     list: Vec<Box<dyn Hittable>>,
 }
 
-impl Hittable_List {
-    pub fn new(list: Vec<Box<dyn Hittable>>) -> Hittable_List {
-        Hittable_List { list }
+impl HittableList {
+    pub fn new(list: Vec<Box<dyn Hittable>>) -> HittableList {
+        HittableList { list }
     }
 }
 
-impl Hittable for Hittable_List {
+impl Hittable for HittableList {
     fn hit(&self, r: &Ray, t_min: f32, t_max: f32) -> Option<HitRecord> {
         // let mut temp_rec: HitRecord = HitRecord::default();
         let mut hit_anything = None;

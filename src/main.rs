@@ -11,14 +11,13 @@ use ray::Ray;
 use util::Lib;
 use vec3::Vec3;
 use vec3::Color;
-use vec3::Point3;
 use camera::Camera;
 use sphere::Sphere;
 use material::*;
-use hittable::{HitRecord,Hittable};
+use hittable::{Hittable};
 use hittable_list::*;
 
-fn color(r:&Ray, world: &Hittable_List, depth: i8)->Vec3{
+fn color(r:&Ray, world: &HittableList, depth: i8)->Vec3{
     if depth <= 0
     {
         return Color::new(0.0,0.0,0.0)
@@ -43,17 +42,22 @@ fn write_ppm (image_width:i32, image_height:i32, max_value:i16){
 
     let mut list: Vec<Box<dyn Hittable>> = Vec::new();
 
+    // let material_ground = Material::Lambertian{ albedo: Color::new(0.8,0.8,0.0) };
+    // let material_center = Material::Lambertian{ albedo: Color::new(0.7,0.3,0.3) };
+    // let material_left   = Material::Metal{ albedo: Color::new(0.8,0.8,0.8), fuzz: 0.3 };
+    // let material_right  = Material::Metal{ albedo: Color::new(0.8,0.6,0.2), fuzz: 1.0 };
+
     let material_ground = Material::Lambertian{ albedo: Color::new(0.8,0.8,0.0) };
-    let material_center = Material::Lambertian{ albedo: Color::new(0.7,0.3,0.3) };
-    let material_left   = Material::Metal{ albedo: Color::new(0.99,0.99,0.99) };
-    let material_right  = Material::Metal{ albedo: Color::new(0.8,0.6,0.2) };
+    let material_center = Material::Lambertian{ albedo: Color::new(0.1,0.2,0.5) };
+    let material_left   = Material::Dielectric{ ref_idx:1.5};
+    let material_right  = Material::Metal{ albedo: Color::new(0.8,0.6,0.2), fuzz: 0.3 };
 
     list.push(Box::new(Sphere::sphere(Vec3::new( 0.0, -100.5, -1.0 ), 100.0, material_ground )));
     list.push(Box::new(Sphere::sphere(Vec3::new( 0.0,    0.0, -1.0 ),   0.5, material_center )));
-    list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),   0.5, material_left   )));
+    list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),  -0.5, material_left   )));
     list.push(Box::new(Sphere::sphere(Vec3::new( 1.0,    0.0, -1.0 ),   0.5, material_right  )));
 
-    let world = Hittable_List::new(list);
+    let world = HittableList::new(list);
 
     let sample_per_pixel:i16 = 100;
     let max_depth:i8 = 50; 
@@ -65,7 +69,7 @@ fn write_ppm (image_width:i32, image_height:i32, max_value:i16){
         for i in 0..image_width {
             let mut pixel_color: Color = Color::new(0.0, 0.0, 0.0);
             for _ in 0..sample_per_pixel{
-                let u: f32  = (i as f32 + Lib::random_double() ) / (image_width - 1) as f32;
+                let u: f32  = (i as f32 + Lib::random_double() ) / (image_width  - 1) as f32;
                 let v: f32  = (j as f32 + Lib::random_double() ) / (image_height - 1) as f32;
                 let r: Ray  = cam.get_ray(u, v);
                 pixel_color = pixel_color + color(&r,&world,max_depth)
@@ -86,7 +90,7 @@ fn main() {
 
     const ASPECT_RATIO:f32 = 16.0/9.0;
     const MAX_VALUE:i16 = 255;
-    const IMAGE_WIDTH:i32 = 400;
+    const IMAGE_WIDTH:i32 = 100;
     const IMAGE_HEIGHT:i32 = (IMAGE_WIDTH as f32 / ASPECT_RATIO) as i32;
     write_ppm(IMAGE_WIDTH, IMAGE_HEIGHT, MAX_VALUE)
 

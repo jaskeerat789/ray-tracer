@@ -128,6 +128,7 @@ impl ops::Neg for Vec3 {
     }
 }
 
+
 impl ops::Mul<f32> for Vec3 {
     type Output = Self;
     fn mul(self, rhs: f32) -> Self::Output {

@@ -33,22 +33,30 @@ impl Hittable for Sphere {
 
             let mut temp: f32 = (-half_b - root) / a;
             if (temp < t_max) && (temp > t_min) {
-                return Some(HitRecord {
+                let mut  temp_rec: HitRecord = HitRecord{
                     t: temp,
                     p: r.point_at_parameter(temp),
-                    normal: (r.point_at_parameter(temp) - self.center) / self.radius,
+                    normal: Vec3::default(),
                     material: self.material,
-                });
+                    front_face:false
+                };
+                let outward_normal: Vec3 = (temp_rec.p - self.center) / self.radius;
+                temp_rec.set_face_normal(r, &outward_normal);
+                return Some(temp_rec);
             }
 
             temp = (-half_b + root) / a;
             if (temp < t_max) && (temp > t_min) {
-                return Some(HitRecord {
+                let mut temp_rec: HitRecord = HitRecord{
                     t: temp,
                     p: r.point_at_parameter(temp),
-                    normal: (r.point_at_parameter(temp) - self.center) / self.radius,
+                    normal: Vec3::default(),
                     material: self.material,
-                });
+                    front_face:false
+                };
+                let outward_normal: Vec3 = (temp_rec.p - self.center) / self.radius;
+                temp_rec.set_face_normal(r, &outward_normal);
+                return Some(temp_rec);
             }
         }
         None
