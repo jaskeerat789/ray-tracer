@@ -11,6 +11,7 @@ use ray::Ray;
 use util::Lib;
 use vec3::Vec3;
 use vec3::Color;
+use vec3::Point3;
 use camera::Camera;
 use sphere::Sphere;
 use material::*;
@@ -42,26 +43,38 @@ fn write_ppm (image_width:i32, image_height:i32, max_value:i16){
 
     let mut list: Vec<Box<dyn Hittable>> = Vec::new();
 
-    // let material_ground = Material::Lambertian{ albedo: Color::new(0.8,0.8,0.0) };
-    // let material_center = Material::Lambertian{ albedo: Color::new(0.7,0.3,0.3) };
-    // let material_left   = Material::Metal{ albedo: Color::new(0.8,0.8,0.8), fuzz: 0.3 };
-    // let material_right  = Material::Metal{ albedo: Color::new(0.8,0.6,0.2), fuzz: 1.0 };
+    let sample_per_pixel:i16 = 100;
+    let max_depth:i8 = 50; 
+    let R = std::f32::consts::FRAC_PI_4.cos();
 
-    let material_ground = Material::Lambertian{ albedo: Color::new(0.8,0.8,0.0) };
-    let material_center = Material::Lambertian{ albedo: Color::new(0.1,0.2,0.5) };
-    let material_left   = Material::Dielectric{ ref_idx:1.5};
-    let material_right  = Material::Metal{ albedo: Color::new(0.8,0.6,0.2), fuzz: 0.3 };
+    let look_from = Point3::new(3.0, 3.0, 2.0);
+    let look_at = Point3::new( 0.0, 0.0,-1.0);
+    let vup = Vec3::new(0.0, 1.0, 0.0);
+    let aspect_ratio = 16.0 / 9.0;
+    let aperture = 2.0;
+    let dist_to_focus: f32 = (look_from - look_at).length();
+    
+    let material_ground = Material::Lambertian{ albedo: Color::new(0.8, 0.8, 0.0) };
+    let material_center = Material::Lambertian{ albedo: Color::new(0.1, 0.2, 0.5) };
+    let material_left   = Material::Dielectric{ ref_idx:1.5 };
+    let material_right  = Material::Metal{ albedo: Color::new(0.8, 0.6, 0.2), fuzz: 0.0 };
 
     list.push(Box::new(Sphere::sphere(Vec3::new( 0.0, -100.5, -1.0 ), 100.0, material_ground )));
     list.push(Box::new(Sphere::sphere(Vec3::new( 0.0,    0.0, -1.0 ),   0.5, material_center )));
-    list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),  -0.5, material_left   )));
-    list.push(Box::new(Sphere::sphere(Vec3::new( 1.0,    0.0, -1.0 ),   0.5, material_right  )));
+    list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),   0.5, material_left  )));
+    list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),  -0.45, material_left  )));
+    list.push(Box::new(Sphere::sphere(Vec3::new( 1.0,    0.0, -1.0 ),   0.5, material_right )));
 
     let world = HittableList::new(list);
-
-    let sample_per_pixel:i16 = 100;
-    let max_depth:i8 = 50; 
-    let cam: Camera = Camera::new();
+    let cam: Camera = Camera::new(
+        look_from,
+        look_at,
+        vup,
+        20.0,
+        aspect_ratio,
+        aperture,
+        dist_to_focus
+    );
 
     println!("P3\n{} {}\n{}",image_width,image_height,max_value);
 
@@ -90,7 +103,7 @@ fn main() {
 
     const ASPECT_RATIO:f32 = 16.0/9.0;
     const MAX_VALUE:i16 = 255;
-    const IMAGE_WIDTH:i32 = 100;
+    const IMAGE_WIDTH:i32 = 400;
     const IMAGE_HEIGHT:i32 = (IMAGE_WIDTH as f32 / ASPECT_RATIO) as i32;
     write_ppm(IMAGE_WIDTH, IMAGE_HEIGHT, MAX_VALUE)
 

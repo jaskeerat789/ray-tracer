@@ -26,7 +26,7 @@ impl Vec3 {
     }
 
     pub fn length(self) -> f32 {
-        self.squared_length().sqrt()
+        (self.e[0] * self.e[0] + self.e[1] * self.e[1] + self.e[2] * self.e[2]).sqrt()
     }
 
     pub fn squared_length(self) -> f32 {
@@ -45,7 +45,7 @@ impl Vec3 {
         Vec3::new(
             u.y() * v.z() - u.z() * v.y(),
             u.z() * v.x() - u.x() * v.z(),
-            u.x() * v.y() - u.y() * v.y(),
+            u.x() * v.y() - u.y() * v.x(),
         )
     }
 
@@ -230,5 +230,19 @@ mod tests {
                 e: [0.5f32, 1.0f32, 1.5f32]
             }
         );
+    }
+    #[test]
+    fn test_cross() {
+        print!("{:?}\n\n",Vec3::cross(
+            &Vec3::new(1.0, 3.0, 4.0),
+            &Vec3::new(2.0, 7.0,-5.0)
+        ));
+        assert_eq!(
+            Vec3::cross(
+                &Vec3::new(1.0, 3.0, 4.0),
+                &Vec3::new(2.0, 7.0,-5.0)
+            ),
+            Vec3::new(-43.0, 13.0, 1.0)
+        )
     }
 }
