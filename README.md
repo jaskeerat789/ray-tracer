@@ -79,7 +79,5 @@ Please follow a systematic Git Workflow -
 - [ ] Improve Runtime (current focus)
 - [ ] Cleaning the code
 - [ ] Complete test for the vector Algebraic functions 
-- [ ] Create a Azure deployment branch
-- [ ] Create a AWS deployment branch
 
 ## Thank you!
