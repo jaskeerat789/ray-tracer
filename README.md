@@ -48,6 +48,7 @@ let cam: Camera = Camera::new(
         aperture,
         dist_to_focus
     );
+```
 You can also change the resolution of image my defining width of image in `IMAGE_WIDTH` constant variable under `main` function. 
 
 ## Contribution to the project
