@@ -26,16 +26,16 @@ Amazing Project for anyone who wants to start learning Rust and understand compl
 ### Playing around
 You are free to change the code in `/src/main.rs` to understand the concepts. To add more sphere, define their physical property and add it to the `world` list. Look at the code below.
 ```rs
-    let material_ground = Material::Lambertian{ albedo: Color::new(0.8, 0.8, 0.0) };
-    let material_center = Material::Lambertian{ albedo: Color::new(0.1, 0.2, 0.5) };
-    let material_left   = Material::Dielectric{ ref_idx:1.5 };
-    let material_right  = Material::Metal{ albedo: Color::new(0.8, 0.6, 0.2), fuzz: 0.0 };
+let material_ground = Material::Lambertian{ albedo: Color::new(0.8, 0.8, 0.0) };
+let material_center = Material::Lambertian{ albedo: Color::new(0.1, 0.2, 0.5) };
+let material_left   = Material::Dielectric{ ref_idx:1.5 };
+let material_right  = Material::Metal{ albedo: Color::new(0.8, 0.6, 0.2), fuzz: 0.0 };
 
-    list.push(Box::new(Sphere::sphere(Vec3::new( 0.0, -100.5, -1.0 ), 100.0, material_ground )));
-    list.push(Box::new(Sphere::sphere(Vec3::new( 0.0,    0.0, -1.0 ),   0.5, material_center )));
-    list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),   0.5, material_left  )));
-    list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),  -0.45, material_left  )));
-    list.push(Box::new(Sphere::sphere(Vec3::new( 1.0,    0.0, -1.0 ),   0.5, material_right )));
+list.push(Box::new(Sphere::sphere(Vec3::new( 0.0, -100.5, -1.0 ), 100.0, material_ground )));
+list.push(Box::new(Sphere::sphere(Vec3::new( 0.0,    0.0, -1.0 ),   0.5, material_center )));
+list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),   0.5, material_left  )));
+list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),  -0.45, material_left  )));
+list.push(Box::new(Sphere::sphere(Vec3::new( 1.0,    0.0, -1.0 ),   0.5, material_right )));
 ```
 You can also adjust the camera angle, aspect ratio, aperture, focus and field of view. Change the parameters passed into the Camera::new() constructor. 
 ```
