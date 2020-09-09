@@ -10,7 +10,7 @@
 - Sphere Enum, used to define sphere in 3d space.
 - Material Enum, used to define physical property of the sphere. Currently supports 3 materials Lambertian, Metallic and Dielectric materials.
 
-Amazing Project for anyone who wants to start learning Rust and understand complex concepts like Traits, Enums, Operator Overloading and Modules :heart:</strong>
+Amazing Project for anyone who wants to start learning Rust and understand complex concepts like Traits, Enums, Operator Overloading and Modules </strong>
 
 ## Installation and Setup
 
@@ -18,7 +18,7 @@ Amazing Project for anyone who wants to start learning Rust and understand compl
 - You should have Rust Toolchain (rustc and cargo). You can install Rust using [Rustup](https://www.rust-lang.org/tools/install)
 - Run `rustup upgrade` to upgrade to the latest version of Rust Toolchain
 
-### Setup and running of project
+### Setup and running the project :rocket:
 - Run `cargo build` to build the project.
 - To store the produced image, run `cargo run > /path_to_dir/image.ppm`
 - Try opening the `image.ppm` in default image viewer. You can use a online service like [Netpbm](http://paulcuth.me.uk/netpbm-viewer/) to view the raw image.
@@ -26,7 +26,7 @@ Amazing Project for anyone who wants to start learning Rust and understand compl
 ### Playing around
 You are free to change the code in `/src/main.rs` to understand the concepts. To add more sphere, define their physical property and add it to the `world` list. Look at the code below.
 ```rs
-let material_ground = Material::Lambertian{ albedo: Color::new(0.8, 0.8, 0.0) };
+    let material_ground = Material::Lambertian{ albedo: Color::new(0.8, 0.8, 0.0) };
     let material_center = Material::Lambertian{ albedo: Color::new(0.1, 0.2, 0.5) };
     let material_left   = Material::Dielectric{ ref_idx:1.5 };
     let material_right  = Material::Metal{ albedo: Color::new(0.8, 0.6, 0.2), fuzz: 0.0 };
