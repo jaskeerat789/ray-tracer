@@ -12,16 +12,13 @@ pub struct HitRecord {
     pub front_face: bool,
 }
 
-impl HitRecord{
-    pub fn set_face_normal (&mut self, r: &Ray, outward_normal: &Vec3)
-    {
+impl HitRecord {
+    pub fn set_face_normal(&mut self, r: &Ray, outward_normal: &Vec3) {
         self.front_face = Vec3::dot(&r.direction(), outward_normal) < 0.0;
-        if self.front_face
-        {
-            self.normal =   *outward_normal;
-        }
-        else {
-            self.normal = - *outward_normal;
+        if self.front_face {
+            self.normal = *outward_normal;
+        } else {
+            self.normal = -*outward_normal;
         }
     }
 }

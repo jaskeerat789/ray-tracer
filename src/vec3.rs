@@ -128,7 +128,6 @@ impl ops::Neg for Vec3 {
     }
 }
 
-
 impl ops::Mul<f32> for Vec3 {
     type Output = Self;
     fn mul(self, rhs: f32) -> Self::Output {
@@ -147,15 +146,10 @@ impl ops::Mul<Vec3> for f32 {
 
 impl ops::Mul<Vec3> for Vec3 {
     type Output = Vec3;
-    fn mul(self, rhs: Vec3) -> Self::Output{
-        Vec3{
-            e:[
-                self.x() * rhs.x(),
-                self.y() * rhs.y(),
-                self.z() * rhs.z()
-            ]
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        Vec3 {
+            e: [self.x() * rhs.x(), self.y() * rhs.y(), self.z() * rhs.z()],
         }
-        
     }
 }
 
@@ -233,15 +227,12 @@ mod tests {
     }
     #[test]
     fn test_cross() {
-        print!("{:?}\n\n",Vec3::cross(
-            &Vec3::new(1.0, 3.0, 4.0),
-            &Vec3::new(2.0, 7.0,-5.0)
-        ));
+        print!(
+            "{:?}\n\n",
+            Vec3::cross(&Vec3::new(1.0, 3.0, 4.0), &Vec3::new(2.0, 7.0, -5.0))
+        );
         assert_eq!(
-            Vec3::cross(
-                &Vec3::new(1.0, 3.0, 4.0),
-                &Vec3::new(2.0, 7.0,-5.0)
-            ),
+            Vec3::cross(&Vec3::new(1.0, 3.0, 4.0), &Vec3::new(2.0, 7.0, -5.0)),
             Vec3::new(-43.0, 13.0, 1.0)
         )
     }
