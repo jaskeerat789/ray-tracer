@@ -1,5 +1,10 @@
 <div align="center">
     <h1>Ray Tracer in Rust</h1>
+
+![Cargo Version](https://img.shields.io/badge/Cargo-v1.45.1-brightgreen?style=plastic&logo=rust)
+![Cargo Version](https://img.shields.io/badge/Rustc-v1.45.2-brightgreen?style=plastic&logo=rust)
+[![License](https://img.shields.io/github/license/jaskeerat789/ray-tracer)](https://github.com/jaskeerat789/ray-tracer/blob/master/LICENSE)
+
 </div>
 
 <strong>This is the implementation of a basic Ray Tracer in Rust. I followed [Ray Tracing in One Weekend ](https://raytracing.github.io/books/RayTracingInOneWeekend.html) to understand the basics of a ray tracer. I also referred the [Rust Docs](https://www.rust-lang.org/learn). This Project contains -
@@ -16,7 +21,7 @@ Amazing Project for anyone who wants to start learning Rust and understand compl
 
 ### Prerequisites
 - You should have Rust Toolchain (rustc and cargo). You can install Rust using [Rustup](https://www.rust-lang.org/tools/install)
-- Run `rustup upgrade` to upgrade to the latest version of Rust Toolchain
+- Run `rustup update` to update to the latest version of Rust Toolchain
 
 ### Setup and running the project :rocket:
 - Run `cargo build` to build the project.
