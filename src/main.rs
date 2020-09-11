@@ -1,22 +1,20 @@
+mod ray;
+mod vec3;
+mod util;
+mod sphere;
 mod camera;
 mod hittable;
-mod hittable_list;
 mod material;
-mod ray;
-mod sphere;
-mod util;
-mod vec3;
+mod hittable_list;
 
-use camera::Camera;
-use hittable::Hittable;
-use hittable_list::*;
-use material::*;
 use ray::Ray;
-use sphere::Sphere;
 use util::Lib;
-use vec3::Color;
-use vec3::Point3;
-use vec3::Vec3;
+use material::*;
+use sphere::Sphere;
+use camera::Camera;
+use hittable_list::*;
+use hittable::Hittable;
+use vec3::{Vec3,Point3,Color};
 
 fn color(r: &Ray, world: &HittableList, depth: i8) -> Vec3 {
     if depth <= 0 {

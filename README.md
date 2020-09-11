@@ -7,7 +7,9 @@
 
 </div>
 
-<strong>This is the implementation of a basic Ray Tracer in Rust. I followed [Ray Tracing in One Weekend ](https://raytracing.github.io/books/RayTracingInOneWeekend.html) to understand the basics of a ray tracer. I also referred the [Rust Docs](https://www.rust-lang.org/learn). This Project contains -
+![Sample Output](./final.png)
+
+<strong>This is the implementation of a basic Ray Tracer in Rust. I followed [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html) to understand the basics of a ray tracer. I also referred the [Rust Docs](https://www.rust-lang.org/learn). This Project contains -
 - Camera Enum with features like variable focus and aperture, movable and simulate different types of lenses. 
 - Vec3 Enum, used to define a vector in 3D space.
 - Ray Enum, used to define a ray of light.
