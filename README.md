@@ -32,7 +32,7 @@ Amazing Project for anyone who wants to start learning Rust and understand compl
 
 ### Playing around
 You are free to change the code in `/src/main.rs` to understand the concepts. To add more sphere, define their physical property and add it to the `world` list. Look at the code below.
-```rs
+```rust
 let material_ground = Material::Lambertian{ albedo: Color::new(0.8, 0.8, 0.0) };
 let material_center = Material::Lambertian{ albedo: Color::new(0.1, 0.2, 0.5) };
 let material_left   = Material::Dielectric{ ref_idx:1.5 };
@@ -45,7 +45,7 @@ list.push(Box::new(Sphere::sphere(Vec3::new(-1.0,    0.0, -1.0 ),  -0.45, materi
 list.push(Box::new(Sphere::sphere(Vec3::new( 1.0,    0.0, -1.0 ),   0.5, material_right )));
 ```
 You can also adjust the camera angle, aspect ratio, aperture, focus and field of view. Change the parameters passed into the Camera::new() constructor. 
-```
+```rust
 let cam: Camera = Camera::new(
         look_from,
         look_at,
